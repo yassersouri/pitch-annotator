@@ -1,3 +1,5 @@
+var img = $('#theimage');
+
 var canvas = document.getElementById("canvas"),
     ctx = canvas.getContext("2d"),
     drawCanvas = document.getElementById("drawCanvas"),
@@ -10,8 +12,8 @@ var canvas = document.getElementById("canvas"),
     startX = 0,
     startY = 0,
     lineThickness = 1
-    width = 720,
-    height = 576;
+    width = img.width(),
+    height = img.height();
 
 canvas.width = drawCanvas.width = width;
 
@@ -23,21 +25,33 @@ drawCanvas.onmousedown = function(e) {
         lastX = e.pageX - this.offsetLeft;
         lastY = e.pageY - this.offsetTop;
         
-        //delete the begining circle
-        drawCtx.clearRect(0, 0, width, height);
-        
-        ctx.strokeStyle = "#000";
-        ctx.beginPath();
-        ctx.moveTo(startX, startY);
-        ctx.lineTo(lastX, lastY);
-        ctx.stroke();
+        clearCxt(drawCtx);
+
+        drawLine(ctx, startX, startY, lastX, lastY);
     } else {
         started = true;
         startX = e.pageX - this.offsetLeft;
         startY = e.pageY - this.offsetTop;
-        
-        drawCtx.beginPath();
-        drawCtx.arc(startX, startY, 5, 0, 2 * Math.PI, true);
-        drawCtx.fill();
+
+        drawCircle(drawCtx, startX, startY);
     }
 };
+
+function drawLine (ctx, x1, y1, x2, y2) {
+    ctx.strokeStyle = "#000";
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+}
+
+function drawCircle (ctx, x, y) {
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+    ctx.beginPath();
+    ctx.arc(x, y, 5, 0, 2 * Math.PI, true);
+    ctx.fill();
+}
+
+function clearCxt (ctx) {
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+}
