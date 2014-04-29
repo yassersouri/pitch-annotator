@@ -72,8 +72,8 @@ $(function(){
         events: {
             "change input": "update",
             "click a.delete": "delete",
-            "mouseover a.delete": "hovered",
-            "mouseleave a.delete": "unhovered"
+            "mouseover .view": "hovered",
+            "mouseleave .view": "unhovered"
         },
 
         initialize: function() {
@@ -95,6 +95,7 @@ $(function(){
 
         delete: function() {
             this.model.destroy();
+            return false;
         },
 
         hovered: function() {
