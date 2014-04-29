@@ -124,11 +124,11 @@ $(function(){
     var App = new Edits;
 
     function drawLine (ctx, x1, y1, x2, y2, hover) {
-        ctx.fillStyle = 'rgba(0, 0, 0, 1)';
+        ctx.strokeWidth = 3;
         if (hover) {
-            ctx.strokeStyle = 'rgba(255, 255, 0, 1)';
+            ctx.strokeStyle = '#FFDC00';
         }else{
-            ctx.strokeStyle = 'rgba(0, 0, 0, 1)';
+            ctx.strokeStyle = '#001F3F';
         };
         ctx.beginPath();
         ctx.moveTo(x1, y1);
@@ -137,7 +137,7 @@ $(function(){
     }
 
     function drawCircle (ctx, x, y) {
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+        ctx.fillStyle = '#0074D9';
         ctx.beginPath();
         ctx.arc(x, y, 5, 0, 2 * Math.PI, true);
         ctx.fill();
