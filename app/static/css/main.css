@@ -1,0 +1,33 @@
+#canvases {
+    position: relative;
+    float: left;
+    width: 800px;
+}
+
+canvas, img{
+    position: absolute;
+    top:10px;
+    left:10px;
+}
+
+#edits {
+    position: relative;
+    float: right;
+    width: 400px;
+}
+
+.view {
+    padding: 5px;
+    margin: 5px;
+    background: #dddddd;
+}
+
+.view input{
+    width: 35px;
+    padding: 5px;
+}
+
+.view label{
+    font-weight: bold;
+    padding-right: 3px;
+}
