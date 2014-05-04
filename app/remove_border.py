@@ -5,6 +5,9 @@ FOLDER = '/Users/yasser/Desktop/azadi/frames/'
 EXT = 'jpg'
 
 def main():
+    """
+    This script removes the ugly border which is present in PTZ cameras of Azadi dataset.
+    """
     files = glob.glob("%s*.%s" % (FOLDER, EXT))
 
     for file in files:
