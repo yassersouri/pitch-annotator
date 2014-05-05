@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Pitch Annotator | Main</title>
-    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
   </head>
   <body>
     <div class="container">
@@ -24,7 +24,7 @@
           <div class="tab-pane {% if loop.first %} active{% endif %}" id="{{ dir }}">
             <div class="list-group">
               {% for img in images.get(dir) %}
-                <a href="#" class="list-group-item">{{ img.get('basename') }}</a>
+                <a href="/a/{{ dir }}/{{ img.get('filename') }}" class="list-group-item {% if img.get('truth') == False %}list-group-item-danger{% endif %}">{{ img.get('basename') }}</a>
               {% endfor %}
             </div>
           </div>
@@ -32,7 +32,7 @@
       </div>
     </div>
 
-    <script src="static/js/jquery.js"></script>
-    <script src="static/js/bootstrap.min.js"></script>
+    <script src="/static/js/jquery.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
   </body>
 </html>

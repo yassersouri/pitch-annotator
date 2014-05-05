@@ -1,0 +1,38 @@
+<!doctype html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Annotate | {{ subd }} | {{ img_name }}</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/static/css/main.css">
+    </head>
+    <body>
+        <div id='canvases'>
+            <img id="theimage" src="{{ image_src }}"/>
+            <canvas id="canvas"></canvas>
+            <canvas id="drawCanvas"></canvas>
+        </div>
+        <div id='edits'>
+            
+        </div>
+
+        <script src="/static/js/jquery.js"></script>
+        <script src="/static/js/json2.js"></script>
+        <script src="/static/js/underscore.js"></script>
+        <script src="/static/js/backbone.js"></script>
+        <script src="/static/js/main.js"></script>
+
+
+        <script type="text/template" id="edit-template">
+            <div class="view">
+                <label class='x1'>X1</label><input class='x1' type="number" name="x1" value="<%- x1 %>">
+                <label class='y1'>Y1</label><input class='y1' type="number" name="y1" value="<%- y1 %>">
+                <label class='x2'>X2</label><input class='x2' type="number" name="x2" value="<%- x2 %>">
+                <label class='y2'>Y2</label><input class='y2' type="number" name="y2" value="<%- y2 %>">
+                <a href="#remove" title="remove" class="delete">remove</a>
+            </div>
+        </script>
+    </body>
+</html>
