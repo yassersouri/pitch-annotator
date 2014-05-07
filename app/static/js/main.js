@@ -115,8 +115,11 @@ $(function(){
         },
 
         initialize: function(){
+            this.$('#width').html(width);
+            this.$('#height').html(height);
             this.listenTo(lines, 'add', this.addOne);
             this.retrieve();
+
         },
 
         addOne: function(line){
