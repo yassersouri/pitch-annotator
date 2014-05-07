@@ -110,6 +110,12 @@ $(function(){
     var Edits = Backbone.View.extend({
         el: $('#edits'),
 
+        url: '/s/' + subd + '/' + img_name,
+
+        events: {
+            "click #save": "persist"
+        },
+
         initialize: function() {
             this.listenTo(lines, 'add', this.addOne);
         },
@@ -117,6 +123,25 @@ $(function(){
         addOne: function(line) {
             var edit = new Edit({model: line});
             this.$el.append(edit.render().el);
+        },
+
+        persist: function() {
+            lines_json = lines.toJSON();
+            to_send = JSON.stringify(lines_json)
+            $.ajax({
+                url: '/s/' + subd + '/' + img_name,
+                type: 'POST',
+                contentType: 'application/json',
+                dataType: 'json',
+                data: to_send,
+            })
+            .done(function() {
+                console.log("success");
+            })
+            .fail(function() {
+                console.log("error");
+            });
+            return false;
         }
 
     });

@@ -1,4 +1,6 @@
 from flask import render_template
+from flask import json
+from flask import request
 import os
 from app import app
 
@@ -18,12 +20,16 @@ def find_sub_dirs(directory):
             subdirs.append(x)
     return subdirs
 
+def get_ground_truth_file_name(img_file_name, subd):
+    x_basename = os.path.splitext(img_file_name)[0]
+    ground_truth_file_name = os.path.join(os.path.join(ground_truth_folder, subd), x_basename + GT_EXT)
+    return x_basename, ground_truth_file_name
+
 def find_all_images(directory, subd):
     files = []
     for x in os.listdir(directory):
         if os.path.isfile(os.path.join(directory, x)):
-            x_basename = os.path.splitext(x)[0]
-            ground_truth_file_name = os.path.join(os.path.join(ground_truth_folder, subd), x_basename + GT_EXT)
+            x_basename, ground_truth_file_name = get_ground_truth_file_name(x, subd)
             has_ground_truth = os.path.isfile(ground_truth_file_name)
             files.append({'filename': x, 'basename': x_basename, 'truth': has_ground_truth})
     # sort the files so that the files with no ground truth are up in the list
@@ -55,4 +61,12 @@ def annotate(subd, img_name):
     }
 
     return render_template("annotate.html", **data)
-    
+
+
+@app.route('/s/<subd>/<img_name>', methods=['POST'])
+def persist(subd, img_name):
+    lines = request.json
+    x_basename, ground_truth_file_name = get_ground_truth_file_name(img_name, subd)
+    with open(ground_truth_file_name, 'w') as outfile:
+        outfile.write(json.dumps(lines))
+    return json.jsonify(m='OK')

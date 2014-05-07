@@ -16,6 +16,12 @@ canvas, img{
     width: 400px;
 }
 
+#actions {
+    position: relative;
+    float: right;
+    width: 400px;
+}
+
 .view {
     padding: 5px;
     margin: 5px;
