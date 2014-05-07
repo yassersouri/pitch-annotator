@@ -30,11 +30,21 @@ def find_all_images(directory, subd):
     for x in os.listdir(directory):
         if os.path.isfile(os.path.join(directory, x)):
             x_basename, ground_truth_file_name = get_ground_truth_file_name(x, subd)
-            has_ground_truth = os.path.isfile(ground_truth_file_name)
+            has_ground_truth = has_actual_lines_in_ground_truth(ground_truth_file_name)
             files.append({'filename': x, 'basename': x_basename, 'truth': has_ground_truth})
     # sort the files so that the files with no ground truth are up in the list
     files.sort(key=lambda x: x['truth'], reverse=False)
     return files
+
+def has_actual_lines_in_ground_truth(ground_truth_file_name):
+    try:
+        with open(ground_truth_file_name, 'r') as infile:
+            lines = json.loads(infile.read())
+            if len(lines) > 0:
+                return True
+    except Exception, e:
+        return False
+    return False
 
 @app.route('/')
 @app.route('/index')
@@ -70,3 +80,17 @@ def persist(subd, img_name):
     with open(ground_truth_file_name, 'w') as outfile:
         outfile.write(json.dumps(lines))
     return json.jsonify(m='OK')
+
+@app.route('/g/<subd>/<img_name>', methods=['GET'])
+def retrieve(subd, img_name):
+    x_basename, ground_truth_file_name = get_ground_truth_file_name(img_name, subd)
+    data = {'has': False}
+    if os.path.isfile(ground_truth_file_name):
+        with open(ground_truth_file_name, 'r') as infile:
+            lines = json.loads(infile.read())
+            if len(lines) > 0:
+                data['has'] = True
+            data['lines'] = lines
+        return json.jsonify(**data)
+    else:
+        return json.jsonify(**data)

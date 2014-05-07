@@ -35,7 +35,7 @@ $(function(){
     canvas.width = drawCanvas.width = width;
     canvas.height = drawCanvas.height = height;
 
-    drawCanvas.onmousedown = function(e) {
+    drawCanvas.onmousedown = function(e){
         if(started){
             started = false;
             lastX = e.pageX - this.offsetLeft - 10;
@@ -76,16 +76,16 @@ $(function(){
             "mouseleave .view": "unhovered"
         },
 
-        initialize: function() {
+        initialize: function(){
             this.listenTo(this.model, 'destroy', this.remove);
         },
 
-        render: function() {
+        render: function(){
             this.$el.html(this.template(this.model.toJSON()));
             return this;
         },
 
-        update: function(e) {
+        update: function(e){
             newX1 = this.$('input.x1').val();
             newY1 = this.$('input.y1').val();
             newX2 = this.$('input.x2').val();
@@ -93,16 +93,16 @@ $(function(){
             this.model.set({'x1': newX1, 'y1': newY1, 'x2': newX2, 'y2': newY2});
         },
 
-        delete: function() {
+        delete: function(){
             this.model.destroy();
             return false;
         },
 
-        hovered: function() {
+        hovered: function(){
             this.model.set({'hover': true})
         },
 
-        unhovered: function() {
+        unhovered: function(){
             this.model.set({'hover': false})
         }
     });
@@ -110,22 +110,21 @@ $(function(){
     var Edits = Backbone.View.extend({
         el: $('#edits'),
 
-        url: '/s/' + subd + '/' + img_name,
-
         events: {
             "click #save": "persist"
         },
 
-        initialize: function() {
+        initialize: function(){
             this.listenTo(lines, 'add', this.addOne);
+            this.retrieve();
         },
 
-        addOne: function(line) {
+        addOne: function(line){
             var edit = new Edit({model: line});
             this.$el.append(edit.render().el);
         },
 
-        persist: function() {
+        persist: function(){
             lines_json = lines.toJSON();
             to_send = JSON.stringify(lines_json)
             $.ajax({
@@ -135,22 +134,44 @@ $(function(){
                 dataType: 'json',
                 data: to_send,
             })
-            .done(function() {
-                console.log("success");
+            .done(function(){
+                $('#save').css('background-color', '#FFDC00')
             })
-            .fail(function() {
-                console.log("error");
+            .fail(function(e){
+                alert('error in persist');
+                console.log(e);
             });
             return false;
+        },
+
+        retrieve: function(){
+            $.ajax({
+                url: '/g/' + subd + '/' + img_name,
+                type: 'GET',
+                dataType: 'json',
+            })
+            .done(function(e) {
+                if (e.has) {
+                    lines_parsed = lines.parse(e.lines);
+                    for (var i = lines_parsed.length - 1; i >= 0; i--) {
+                        lines.add(lines_parsed[i]);
+                    };
+                };
+            })
+            .fail(function(e) {
+                alert('error in retrieve')
+                console.log(e);
+            });
+            
         }
 
     });
 
     var App = new Edits;
 
-    function drawLine (ctx, x1, y1, x2, y2, hover) {
+    function drawLine(ctx, x1, y1, x2, y2, hover){
         ctx.strokeWidth = 3;
-        if (hover) {
+        if(hover){
             ctx.strokeStyle = '#FFDC00';
         }else{
             ctx.strokeStyle = '#001F3F';
@@ -161,14 +182,14 @@ $(function(){
         ctx.stroke();
     }
 
-    function drawCircle (ctx, x, y) {
+    function drawCircle(ctx, x, y){
         ctx.fillStyle = '#0074D9';
         ctx.beginPath();
         ctx.arc(x, y, 5, 0, 2 * Math.PI, true);
         ctx.fill();
     }
 
-    function clearCxt(ctx) {
+    function clearCxt(ctx){
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     }
 
