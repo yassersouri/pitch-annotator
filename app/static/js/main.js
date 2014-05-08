@@ -156,7 +156,7 @@ $(function(){
             .done(function(e) {
                 if (e.has) {
                     lines_parsed = lines.parse(e.lines);
-                    for (var i = lines_parsed.length - 1; i >= 0; i--) {
+                    for (var i = 0; i < lines_parsed.length; i++) {
                         lines.add(lines_parsed[i]);
                     };
                 };
