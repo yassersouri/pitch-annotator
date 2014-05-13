@@ -25,6 +25,10 @@ def get_ground_truth_file_name(img_file_name, subd):
     ground_truth_file_name = os.path.join(os.path.join(ground_truth_folder, subd), x_basename + GT_EXT)
     return x_basename, ground_truth_file_name
 
+def get_ground_truth_subfolder(subd):
+    ground_truth_subfolder = os.path.join(ground_truth_folder, subd)
+    return ground_truth_subfolder
+
 def find_all_images(directory, subd):
     files = []
     for x in os.listdir(directory):
@@ -77,6 +81,9 @@ def annotate(subd, img_name):
 def persist(subd, img_name):
     lines = request.json
     x_basename, ground_truth_file_name = get_ground_truth_file_name(img_name, subd)
+    ground_truth_subfolder = get_ground_truth_subfolder(subd)
+    if not os.path.exists(ground_truth_subfolder):
+        os.makedirs(ground_truth_subfolder)
     with open(ground_truth_file_name, 'w') as outfile:
         outfile.write(json.dumps(lines))
     return json.jsonify(m='OK')
