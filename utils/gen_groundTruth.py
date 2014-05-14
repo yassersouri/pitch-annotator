@@ -9,7 +9,7 @@ from matplotlib import pylab as plt
 json_file_name = '/Users/yasser/sci-repo/pitchdataset/groundTruth/train/3.json'
 img_file_name = '/Users/yasser/sci-repo/pitchdataset/images/train/3.jpg'
 
-def do_stuff(json_file_name, img_file_name):
+def gen_one_ground_truth(json_file_name, img_file_name):
     img = cv2.imread(img_file_name)
     shape = img.shape[0:2]
     lines = 0
@@ -41,17 +41,11 @@ def do_stuff(json_file_name, img_file_name):
                         segs[i, j] = segs[i, j-1]
 
 
-    plt.imshow(segs)
-
-    print segs.dtype
-
-    cv2.imshow('test', segs_pre)
-    cv2.waitKey(0)
-    plt.show()
+    result = {'edge': edge, 'segs': segs}
+    return result
 
 def main():
-
-    do_stuff(json_file_name, img_file_name)
+    gen_one_ground_truth(json_file_name, img_file_name)
 
 if __name__ == '__main__':
     main()
