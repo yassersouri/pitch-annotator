@@ -4,7 +4,7 @@ from flask import request
 import os
 from app import app
 
-DATA_BASE_FOLDER = '/Users/yasser/sci-repo/pitchdataset'
+DATA_BASE_FOLDER = 'E:/Code Vault/Github/pitch-annotator/dataset'
 
 IMAGE_FOLDER = 'images'
 GROUND_TRUTH_FOLDER = 'groundTruth'
